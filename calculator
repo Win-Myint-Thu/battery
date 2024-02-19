@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drone</title>
+    <script src="https://kit.fontawesome.com/fd2f9274a1.js" crossorigin="anonymous"></script>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+    <style>
+        body{
+            background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+            
+        }
+        .title{
+            color: blue;
+            text-align: center;
+        }
+
+        .btn{
+            background-color: blue;
+            color: white;
+            width: 100%;
+            margin: auto;
+            padding: 2px;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- <nav style="background-color: black;position: fixed;width: 100%;">
+        <select name="" id="">
+            <option value="">Item1</option>
+            <option value="">Item2</option>
+        </select>
+    </nav> -->
+
+    <!-- <h2 style="text-align: center;color: brown;"><strong>DRONE</strong></h2> -->
+    <h4 style="text-align: center;"><u>DRONE Battery Status Calculator</u></h4>
+
+
+    <table width="100%" border="1px">
+        <tr>
+            <th colspan="2" style="background-color: bisque;"><strong class="title">Input Data</strong></th>
+        </tr>   
+        <tr>
+            <tr>
+                <td>Total Voltage</td>
+                <td><input type="number" onkeyup="cur()" style="width: 80px;" id="bt_type" value="25.2" placeholder=""> V</td>
+            </tr>
+            <!-- <td>Battery Type</td>
+            <td>
+                <select name="" id="bt_type" onchange="cur()">
+                    <option disabled selected>---Battery Type---</option>
+                    <option value="4.45">4.45</option>
+                    <option value="4.35">4.35</option>
+                    <option value="4.2">4.2</option>
+                    <option value="4.15">4.15</option>
+                    
+                </select>
+                V
+            </td> -->
+        </tr>
+        <tr>
+            <td>Amount of Cell</td>
+            <td><input type="number" onkeyup="cur()" style="width: 80px;" id="cell" value="6" placeholder=""> Cell</td>
+        </tr>
+        <tr>
+            <td>Amount of Battery</td>
+            <td><input type="number" onkeyup="cur()" style="width: 80px;" id="bty_no" value="1" placeholder=""> Nos</td>
+        </tr>
+        <tr>
+            <td>miliAmpere Hour</td>
+            <td><input type="number" onkeyup="cur()" style="width: 80px;" id="mah" placeholder=""> mAh</td>
+        </tr>
+        <tr>
+            <td>Current Voltage</td>
+            <td><input type="number" onkeyup="cur()" style="width: 80px;" id="cur_v" placeholder=""> V</td>
+        </tr>
+        <tr>
+            <td>Charger Ampere</td>
+            <td><input type="number" onkeyup="cur()" value="10" style="width: 80px;" id="out_a" placeholder=""> A</td>
+        </tr>
+        
+        <th colspan="2" style="background-color: bisque;"><strong class="title">Result</strong></th>
+        <tr>
+            <td>Voltage Per Cell</td>
+            <td><p id="vpc" style="color: rgb(37, 6, 213);"></p></td>
+        </tr>
+        <tr>
+            <td>0 % Voltage</td>
+            <td><p id="min_v" style="color: rgb(37, 6, 213);"></p></td>
+        </tr>
+        <tr>
+            <td>100 % Voltage</td>
+            <td><p id="max_v" style="color: rgb(37, 6, 213);"></p></td>
+        </tr>
+        
+        
+        <tr>
+            <td>Battery % (Current)</td>
+            <td><p id="percent" style="color: rgb(37, 6, 213);"></p></td>
+        </tr>
+        <tr>
+            <td>Required Charging Time</td>
+            <td><p id="result" style="color: rgb(37, 6, 213);"></p></td>
+        </tr>
+        <tr>
+            <td>Full from 0 %</td>
+            <td><p id="from_z" style="color: rgb(37, 6, 213);"></p></td>
+        </tr>
+        
+        
+    </table>
+    <!-- <button onclick="fun()" type="button" class="btn">Calculate</button> -->
+
+    <div style="text-align: center;margin-top: 20px;">
+        <a title="Viber" href="viber://chat?number=%2b959667414996" style="color:blueviolet;text-decoration: none;">ပိုမိုကောင်းမွန်စေလိုသဖြင့် အကြံပြုရန် နှိပ်ပါ</a>
+
+    </div>
+
+    <script>
+        function cur() {
+            var cur_v = parseFloat(document.getElementById('cur_v').value);
+            var bt_type = parseFloat(document.getElementById('bt_type').value);
+            var cell = parseInt(document.getElementById('cell').value);
+            var bty_no = parseInt(document.getElementById('bty_no').value);
+            var vpc = parseFloat(bt_type / cell);
+            console.log(vpc);
+            var x = (vpc * cell) * bty_no;
+            // var zero_v = (bt_type * cell) - (1 * bty_no);
+            var zero_v = bt_type - 1;
+
+            // var zero_v = (bt_type * cell) - (1 * bty_no);
+            var zero_v = vpc - 1;
+            
+            var zero_v_total = (zero_v * cell) * bty_no;
+            
+            var divider = (bty_no * cell) / 100;
+            // console.log(typeof(divider));
+
+            document.getElementById('vpc').innerHTML = vpc.toFixed(2) + ' ' + 'V';
+            document.getElementById('max_v').innerHTML = x.toFixed(2) + ' ' + 'V';
+            document.getElementById('min_v').innerHTML = zero_v_total.toFixed(2) + ' ' + 'V';
+
+            var percent = (cur_v - zero_v_total) / divider;
+            console.log(zero_v_total);
+
+            document.getElementById('percent').innerHTML = parseFloat(percent).toFixed(2) + ' ' + '%';
+
+            // Charging Time
+            var mah1 = parseFloat(document.getElementById('mah').value);
+            var mah = mah1 / 1000; //mAh to Ah
+            var net_mah = mah * 60;
+            var out_a = parseFloat(document.getElementById('out_a').value);
+            
+            var from_z = net_mah / out_a;
+
+            var total_min = parseInt(from_z); 
+
+            var hours   = Math.floor(total_min / 3600);
+            var minutes = Math.floor((total_min - (hours * 3600)) / 60);
+            var seconds = total_min - (hours * 3600) - (minutes * 60);
+
+            if (hours   < 10) {hours   = "0"+hours;}
+            if (minutes < 10) {minutes = "0"+minutes;}
+            if (seconds < 10) {seconds = "0"+seconds;}
+            // return hours+':'+minutes+':'+seconds;
+
+            document.getElementById('from_z').innerHTML = minutes+':'+seconds + ' ' + 'Hr : Min';
+
+            // var per_min = 100 / total_min; // charging % per minute
+            var per_percent = total_min / 100; // charging minute A per percent
+            var required_percent = (100 - parseInt(percent));
+            // console.log(required_percent);
+
+            var required_min = required_percent * per_percent;
+
+            var total_min1 = parseInt(required_min); 
+
+            var hours1   = Math.floor(total_min1 / 3600);
+            var minutes1 = Math.floor((total_min1 - (hours1 * 3600)) / 60);
+            var seconds1 = total_min1 - (hours1 * 3600) - (minutes1 * 60);
+
+            if (hours1   < 10) {hours1   = "0"+hours1;}
+            if (minutes1 < 10) {minutes1 = "0"+minutes1;}
+            if (seconds1 < 10) {seconds1 = "0"+seconds1;}
+
+            document.getElementById('result').innerHTML = minutes1 +':'+seconds1 + ' ' + 'Hr : Min';
+
+        }
+
+        // function fun() {
+
+        //     var mah = parseFloat(document.getElementById('mah').value);
+
+        //     var net_mah = mah * 60;
+        //     var out_a = parseFloat(document.getElementById('out_a').value);
+        //     // console.log(out_a);
+        //     var result = net_mah / out_a;
+
+        //     var total_min = parseInt(result); // don't forget the second param
+        //     var hours   = Math.floor(total_min / 3600);
+        //     var minutes = Math.floor((total_min - (hours * 3600)) / 60);
+        //     var seconds = total_min - (hours * 3600) - (minutes * 60);
+
+        //     if (hours   < 10) {hours   = "0"+hours;}
+        //     if (minutes < 10) {minutes = "0"+minutes;}
+        //     if (seconds < 10) {seconds = "0"+seconds;}
+        //     // return hours+':'+minutes+':'+seconds;
+
+        //     document.getElementById('result').innerHTML = minutes+':'+seconds + ' ' + 'Hr : Min';
+
+        //     // let now = new Date();
+        //     // let hour = now.getHours();
+        //     // console.log(hour);
+        //     // let minute = now.getMinutes();
+        //     // console.log(minute);
+
+        //     // document.getElementById('exact').innerHTML = (minutes+hour)+':'+ (seconds+minute) + ' ' + 'H:M';
+             
+        //     }
+    </script>
+
+</body>
+</html>
